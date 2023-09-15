@@ -1,7 +1,7 @@
 // Generate and save a session ID in a cookie
 function getSessionID() {
 
-    const sessionID = localStorage.getItem("sessionid");
+    let sessionID = localStorage.getItem("sessionid");
 
     if(sessionID) {
         return sessionID;

@@ -85,6 +85,8 @@ fpPromise
                 formData.append('rid', rid);
                 formData.append('visitorId', result.visitorId);
                 formData.append('sessionId', sessionId);
+                formData.append('startTime', startTime);
+                formData.append('endTime', endTime);
                 formData.append('elapsedTime', elapsdedTime);
 
                 // Send a beacon request

@@ -11,7 +11,7 @@ function getSessionID() {
         return cookieValue;
     } else {
         // Generate a new session ID
-        var sessionID = Math.random().toString(36).substring(2);
+        sessionID = Math.random().toString(36).substring(2);
         // Get the current date and time
         var now = new Date();
         // Set the cookie to expire 12 months from now

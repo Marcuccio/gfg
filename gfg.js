@@ -90,7 +90,7 @@ fpPromise
                 formData.append('elapsedTime', elapsdedTime);
 
                 // Send a beacon request
-                let url = "/api/tracking";
+                let url = "/gfg/";
                 if (document.visibilityState === 'hidden') {
                   navigator.sendBeacon(url,JSON.stringify(Object.fromEntries(formData)));
                 }

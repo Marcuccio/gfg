@@ -1,6 +1,11 @@
 // Generate and save a session ID in a cookie
 function getSessionID() {
-    if (document.cookie.indexOf("sessionid") >= 0) {
+
+    const sessionID = localStorage.getItem("sessionid");
+
+    if(sessionID) {
+        return sessionID;
+    } else if (document.cookie.indexOf("sessionid") >= 0) {
         // Get the value of the "sessionid" cookie
         var cookieValue = document.cookie.split(";").find(cookie => cookie.trim().startsWith("sessionid")).split("=")[1];
         return cookieValue;
@@ -11,8 +16,13 @@ function getSessionID() {
         var now = new Date();
         // Set the cookie to expire 12 months from now
         var expiration = new Date(now.getFullYear() + 1, now.getMonth(), now.getDate());
+        
         // Set the "sessionid" cookie with a value of the session ID
         document.cookie = "sessionid=" + sessionID + "; expires=" + expiration.toUTCString();
+        
+        // Add the "sessionid" to the LocalStorage
+        localStorage.setItem("sessionid", sessionID);
+        
         return sessionID;
   }
 }

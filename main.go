@@ -55,6 +55,14 @@ func main() {
         var jsonOk bool = true
         var formOk bool = true
 
+        // Loop over header names
+        // for name, values := range r.Header {
+        //     // Loop over all values for the name.
+        //     for _, value := range values {
+        //         fmt.Println(name, value)
+        //     }
+        // }
+
         if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
             // is not json...
             jsonOk = false

@@ -14,7 +14,7 @@ type Data struct {
     VisitorID   string `json:"visitorId"`
     SessionID   string `json:"sessionId"`
     StartDate   string `json:"startDate,omitempty"`
-    TimeZone     string `json:"timezone,omitempty"`
+    Timezone     string `json:"timezone,omitempty"`
     ElapsedTime string `json:"elapsedTime,omitempty"`
     SRCAddress  string `json:"srcAddress,omitempty"`
 }
@@ -22,7 +22,7 @@ type Data struct {
 func writeData(c chan Data, file *os.File) {
     for {
         data := <-c
-        fmt.Fprintf(file, "%v,%v,%v,%v,%v,%v,%v\n", data.Rid, data.VisitorID, data.SessionID, data.StartDate, data.TimeZone, data.ElapsedTime, data.SRCAddress)
+        fmt.Fprintf(file, "%v,%v,%v,%v,%v,%v,%v\n", data.Rid, data.VisitorID, data.SessionID, data.StartDate, data.Timezone, data.ElapsedTime, data.SRCAddress)
     }
 }
 
@@ -44,7 +44,7 @@ func main() {
     defer f.Close()
 
     if newFile {
-        fmt.Fprintln(f, "Rid,Visitor ID,Session ID,Start Time,End Time,Elapsed Time,Source Address")
+        fmt.Fprintln(f, "Rid,Visitor ID,Session ID,Start Date,Timezone,Elapsed Time,Source Address")
     }
 
     dataCh := make(chan Data, 1)
@@ -62,7 +62,7 @@ func main() {
             data.VisitorID = r.Form.Get("visitorId")
             data.SessionID = r.Form.Get("sessionId")
             data.StartDate = r.Form.Get("startDate")
-            data.TimeZone = r.Form.Get("timezone")
+            data.Timezone = r.Form.Get("timezone")
             data.ElapsedTime = r.Form.Get("elapsedTime")
             if data.Rid == "" || data.VisitorID == "" {
                 // is not form either

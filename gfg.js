@@ -36,6 +36,7 @@ const rid = urlParams.get(RID)
 
 // Measure the elapsed time since the page was loaded
 const startTime = performance.now()
+const startDate = new Date().toLocaleString();
 
 // Get the session ID
 const sessionId = getSessionID();
@@ -85,8 +86,8 @@ fpPromise
                 formData.append('rid', rid);
                 formData.append('visitorId', result.visitorId);
                 formData.append('sessionId', sessionId);
-                formData.append('startTime', startTime);
-                formData.append('endTime', endTime);
+                formData.append('startDate', startDate);
+                formData.append('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
                 formData.append('elapsedTime', elapsdedTime);
 
                 // Send a beacon request

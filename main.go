@@ -13,8 +13,8 @@ type Data struct {
     Rid         string `json:"rid"`
     VisitorID   string `json:"visitorId"`
     SessionID   string `json:"sessionId"`
-    StartTime   string `json:"startTime,omitempty"`
-    EndTime     string `json:"endTime,omitempty"`
+    StartDate   string `json:"startDate,omitempty"`
+    TimeZone     string `json:"timezone,omitempty"`
     ElapsedTime string `json:"elapsedTime,omitempty"`
     SRCAddress  string `json:"srcAddress,omitempty"`
 }
@@ -22,7 +22,7 @@ type Data struct {
 func writeData(c chan Data, file *os.File) {
     for {
         data := <-c
-        fmt.Fprintf(file, "%v,%v,%v,%v,%v,%v,%v\n", data.Rid, data.VisitorID, data.SessionID, data.StartTime, data.EndTime, data.ElapsedTime, data.SRCAddress)
+        fmt.Fprintf(file, "%v,%v,%v,%v,%v,%v,%v\n", data.Rid, data.VisitorID, data.SessionID, data.StartDate, data.TimeZone, data.ElapsedTime, data.SRCAddress)
     }
 }
 
@@ -61,8 +61,8 @@ func main() {
             data.Rid = r.Form.Get("rid")
             data.VisitorID = r.Form.Get("visitorId")
             data.SessionID = r.Form.Get("sessionId")
-            data.StartTime = r.Form.Get("startTime")
-            data.EndTime = r.Form.Get("endTime")
+            data.StartDate = r.Form.Get("startDate")
+            data.TimeZone = r.Form.Get("timezone")
             data.ElapsedTime = r.Form.Get("elapsedTime")
             if data.Rid == "" || data.VisitorID == "" {
                 // is not form either

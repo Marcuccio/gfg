@@ -1,6 +1,7 @@
 package main
 
 import (
+    "encoding/csv"
     "encoding/json"
     "fmt"
     "log"
@@ -14,15 +15,19 @@ type Data struct {
     VisitorID   string `json:"visitorId"`
     SessionID   string `json:"sessionId"`
     StartDate   string `json:"startDate,omitempty"`
-    Timezone     string `json:"timezone,omitempty"`
+    Timezone    string `json:"timezone,omitempty"`
     ElapsedTime string `json:"elapsedTime,omitempty"`
     SRCAddress  string `json:"srcAddress,omitempty"`
 }
 
-func writeData(c chan Data, file *os.File) {
+func writeData(c chan Data, csvwriter *csv.Writer) {
     for {
         data := <-c
-        fmt.Fprintf(file, "%v,%v,%v,%v,%v,%v,%v\n", data.Rid, data.VisitorID, data.SessionID, data.StartDate, data.Timezone, data.ElapsedTime, data.SRCAddress)
+        err := csvwriter.Write([]string{data.Rid, data.VisitorID, data.SessionID, data.StartDate, data.Timezone, data.ElapsedTime, data.SRCAddress})
+        csvwriter.Flush()
+        if err != nil {
+            log.Println(err)
+        }
     }
 }
 
@@ -43,12 +48,14 @@ func main() {
     }
     defer f.Close()
 
+    csvwriter := csv.NewWriter(f)
     if newFile {
-        fmt.Fprintln(f, "Rid,Visitor ID,Session ID,Start Date,Timezone,Elapsed Time,Source Address")
+        csvwriter.Write([]string{"Rid", "Visitor ID", "Session ID", "Start Date", "Timezone", "Elapsed Time", "Source Address"})
+        csvwriter.Flush()
     }
 
     dataCh := make(chan Data, 1)
-    go writeData(dataCh, f)
+    go writeData(dataCh, csvwriter)
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
         var data Data
@@ -89,5 +96,5 @@ func main() {
     })
 
     fmt.Printf("[+] Server is runing at port %v\n", os.Args[2])
-    http.ListenAndServe(fmt.Sprintf(":%v", os.Args[2]),nil)
+    http.ListenAndServe(fmt.Sprintf(":%v", os.Args[2]), nil)
 }

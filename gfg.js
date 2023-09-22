@@ -88,7 +88,7 @@ fpPromise
                 formData.append('sessionId', sessionId);
                 formData.append('startDate', startDate);
                 formData.append('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
-                formData.append('elapsedTime', elapsdedTime);
+                formData.append('elapsedTime', Math.round(elapsdedTime));
 
                 // Send a beacon request
                 let url = "/gfg/";

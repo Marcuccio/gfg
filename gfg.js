@@ -51,8 +51,6 @@ const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
     .then(fp => fp.get())
     .then(result => {vid = result.visitorId})
     .finally(() => {
-        console.log("finally!");
-
         // // Append the visitorID as a hidden input to the target form
         let targetForm = undefined;
 

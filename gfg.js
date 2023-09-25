@@ -41,16 +41,18 @@ const startDate = new Date().toLocaleString();
 // Get the session ID
 const sessionId = getSessionID();
 
+// Visitor ID
+let vid = "";
+
 // Initialize the agent at application startup.
 // You can also use https://openfpcdn.io/fingerprintjs/v3/esm.min.js
 const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
     .then(FingerprintJS => FingerprintJS.load())
-
-// Get the visitor identifier when you need it.
-fpPromise
     .then(fp => fp.get())
-    .then(result => {
-        
+    .then(result => {vid = result.visitorId})
+    .finally(() => {
+        console.log("finally!");
+
         // // Append the visitorID as a hidden input to the target form
         let targetForm = undefined;
 
@@ -65,7 +67,7 @@ fpPromise
             var input_vid = document.createElement("input");
             input_vid.type = "hidden"
             input_vid.name = "visitorid"
-            input_vid.value = result.visitorId
+            input_vid.value = vid;
             targetForm.appendChild(input_vid);
 
             var input_sid = document.createElement("input");
@@ -84,7 +86,7 @@ fpPromise
                 // Create a form data object containing the tracking data
                 const formData = new FormData();
                 formData.append('rid', rid);
-                formData.append('visitorId', result.visitorId);
+                formData.append('visitorId', vid);
                 formData.append('sessionId', sessionId);
                 formData.append('startDate', startDate);
                 formData.append('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
@@ -96,5 +98,5 @@ fpPromise
                   navigator.sendBeacon(url,JSON.stringify(Object.fromEntries(formData)));
                 }
             });
-        }        
+        }   
     })
